@@ -6,6 +6,8 @@ use App\Http\Controllers\Admin\Finance_calendersController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\DishesController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\OrderItemController;
 use App\Http\Controllers\RestaurantController;
 use Illuminate\Support\Facades\Route;
 
@@ -36,6 +38,8 @@ Route::group(
         Route::resource('/restaurants', RestaurantController::class);
         Route::resource('/categories', CategoriesController::class);
         Route::resource('/dishes', DishesController::class);
+        Route::resource('/orders', OrderController::class);
+        // Route::get('/orders', [OrderItemController::class, 'create']);
     },
 );
 

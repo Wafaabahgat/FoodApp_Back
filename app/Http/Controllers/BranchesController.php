@@ -68,8 +68,9 @@ class BranchesController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Branch $branches)
+    public function edit(string $id)
     {
+        $branches = Branch::findOrFail($id);
         $restaurant = Restaurant::all();
         $country = Country::all();
         return view('layout.admin.Branches.edit', compact('branches', 'restaurant', 'country'));
@@ -92,17 +93,19 @@ class BranchesController extends Controller
         $branches->update($request->all());
 
         return redirect()->route('branches.index')
-            ->with('success', 'Branches created successfully.');
+            ->with('success', 'Branch updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Branch $branches)
+    public function destroy(string $id)
     {
+        $branches = Branch::findOrFail($id);
         $branches->delete();
 
         return redirect()->route('branches.index')
-            ->with('success', 'Branches deleted successfully.');
+            ->with('success', 'Branch deleted successfully.');
     }
 }

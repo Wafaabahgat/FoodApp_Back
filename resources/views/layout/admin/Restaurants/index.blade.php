@@ -18,10 +18,10 @@
 @endsection
 
 @section('content')
-<div class="mb-2">
-    <a href="{{ route('restaurants.create') }}" class="mr-2 btn btn-primary">Create</a>
-    {{-- <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-dark">Trash</a> --}}
-</div>
+    <div class="mb-2">
+        <a href="{{ route('restaurants.create') }}" class="mr-2 btn btn-primary">Create</a>
+        {{-- <a href="{{ route('dashboard.categories.trash') }}" class="btn btn-dark">Trash</a> --}}
+    </div>
     <div class="col-12">
         <div class="card">
             <div class="card-header">
@@ -33,6 +33,7 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Name</th>
                             <th scope="col">Address</th>
                             <th scope="col">Phone</th>
@@ -45,7 +46,12 @@
                         @forelse ($data as $dt)
                             <tr>
                                 <th scope="row"> {{ $dt->id }} </th>
+                                <td>
+                                    {{-- <img src="{{ asset('storage/' . $dt->image) }}" alt="Restaurant Image" height="60" width="80" onerror="this.onerror=null;this.src='path/to/default-image.jpg';" /> --}}
+                                    <img src="{{ asset('storage/' . $dt->image) }}" alt="Restaurant Image" height="60" width="80" />
+                                </td>
                                 <td> {{ $dt->name }} </td>
+                                
                                 <td> {{ $dt->address }} </td>
                                 <td> {{ $dt->phone }} </td>
                                 <td> {{ $dt->email }} </td>

@@ -45,6 +45,7 @@ class DishesController extends Controller
         $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'image' => 'image|max:1048576',
             'price' => 'required|numeric',
             'restaurant_id' => 'required|exists:restaurants,id',
         ]);
@@ -80,6 +81,7 @@ class DishesController extends Controller
     {
         $request->validate([
             'name' => 'required',
+            'image' => 'image|max:1048576',
             'description' => 'required',
             'price' => 'required|numeric',
             'restaurant_id' => 'required|exists:restaurants,id',

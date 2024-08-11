@@ -20,10 +20,11 @@ class LoginController extends Controller
         ]);
 
         $credentials = $request->only('email', 'password');
-
-        if (Auth::attempt($credentials)) {
-            $user = Auth::user();
-            $token = $user->createToken('Personal Access Token')->plainTextToken;
+        // dd(auth('admin')->attempt($credentials));
+       
+        if (auth('admin')->attempt($credentials)) {
+            $user = Auth::guard('admin')->user();
+            $token = $user->createToken('token')->plainTextToken;
 
             return response()->json([
                 'token' => $token,
@@ -41,7 +42,7 @@ class LoginController extends Controller
      */
     public function logout(Request $request)
     {
-        $user = Auth::user();
+        $user = Auth::guard('admin')->user();
         $user->tokens()->delete();
 
         return response()->json(['message' => 'Logged out successfully.'], 200);

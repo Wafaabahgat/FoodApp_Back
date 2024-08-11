@@ -63,6 +63,18 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href={{ route('branches.index') }} class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Branches</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href={{ route('country.index') }} class="nav-link active">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Country</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href={{ route('categories.index') }} class="nav-link active">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Categories</p>

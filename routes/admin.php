@@ -4,7 +4,9 @@ use App\Http\Controllers\Admin\Admin_panel_settingController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Finance_calendersController;
 use App\Http\Controllers\Admin\LoginController;
+use App\Http\Controllers\BranchesController;
 use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DishesController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\OrderItemController;
@@ -36,6 +38,8 @@ Route::group(
 
         /*    */
         Route::resource('/restaurants', RestaurantController::class);
+        Route::resource('/branches', BranchesController::class);
+        Route::resource('/country', CountryController::class);
         Route::resource('/categories', CategoriesController::class);
         Route::resource('/dishes', DishesController::class);
         Route::resource('/orders', OrderController::class);
@@ -53,11 +57,13 @@ Route::group(
     function () {
         // login //
         Route::get('login', [
-            LoginController::class, 'show_login_view'
+            LoginController::class,
+            'show_login_view'
         ])->name('admin.showlogin');
 
         Route::post('login', [
-            LoginController::class, 'login'
+            LoginController::class,
+            'login'
         ])->name('admin.login');
     },
 

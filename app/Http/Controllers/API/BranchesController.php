@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 
 class BranchesController extends Controller
@@ -12,7 +13,8 @@ class BranchesController extends Controller
      */
     public function index()
     {
-        //
+        $branch = Branch::all();
+        return response()->json($branch);
     }
 
     /**
@@ -20,7 +22,18 @@ class BranchesController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'name' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'restaurant_id' => 'required|exists:restaurants,id',
+            'country_id' => 'required|exists:countries,id',
+        ]);
+
+        Branch::create($request->all());
+        return response()
+            ->json(['message' => 'Branch created successfully'], 201);
     }
 
     /**
@@ -28,7 +41,15 @@ class BranchesController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $branch = Branch::find($id);
+
+        if (!$branch) {
+            return response()
+                ->json(['message' => 'Branch not found'], 404);
+        }
+
+        return response()
+            ->json($branch);
     }
 
     /**
@@ -36,7 +57,23 @@ class BranchesController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $branch = Branch::find($id);
+        if (!$branch) {
+            return response()->json(['message' => 'Branch not found'], 404);
+        }
+
+        $validated = $request->validate([
+            'name' => 'required',
+            'city' => 'required',
+            'phone' => 'required',
+            'address' => 'required',
+            'restaurant_id' => 'required|exists:restaurants,id',
+            'country_id' => 'required|exists:countries,id',
+        ]);
+
+        $branch->update($validated);
+        return response()
+            ->json(['message' => 'Branch created successfully'], 201);
     }
 
     /**
@@ -44,6 +81,12 @@ class BranchesController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $branch = Branch::find($id);
+        if (!$branch) {
+            return response()->json(['message' => 'Branch not found'], 404);
+        }
+
+        $branch->delete();
+        return response()->json(['message' => 'Branch deleted successfully']);
     }
 }

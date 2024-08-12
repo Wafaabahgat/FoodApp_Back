@@ -47,11 +47,11 @@
                             <tr>
                                 <th scope="row"> {{ $dt->id }} </th>
                                 <td>
-                                    {{-- <img src="{{ asset('storage/' . $dt->image) }}" alt="Restaurant Image" height="60" width="80" onerror="this.onerror=null;this.src='path/to/default-image.jpg';" /> --}}
-                                    <img src="{{ asset('storage/' . $dt->image) }}" alt="Restaurant Image" height="60" width="80" />
+                                    <img src="{{ asset('storage/' . $dt->image) }}" alt="Restaurant Image" height="60"
+                                        width="80" />
                                 </td>
                                 <td> {{ $dt->name }} </td>
-                                
+
                                 <td> {{ $dt->address }} </td>
                                 <td> {{ $dt->phone }} </td>
                                 <td> {{ $dt->email }} </td>

@@ -46,13 +46,11 @@ class RestaurantController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images/restaurants', 'public');
-            $data['image'] = $imagePath;
-        }
+        $data = $request->except('image');
+        $data['image'] = $this->uploadImage($request);
 
-
-        Restaurant::create($request->all());
+        Restaurant::create($data);
+        // Restaurant::create($request->all());
 
         return redirect()->route('restaurants.index')
             ->with('success', 'Restaurant created successfully.');
@@ -88,18 +86,22 @@ class RestaurantController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
 
-        if ($request->hasFile('image')) {
-            // Delete old image
-            if ($restaurant->image) {
-                Storage::disk('public')->delete($restaurant->image);
-            }
+        $old_image = $restaurant->image;
 
-            $imagePath = $request->file('image')->store('images/restaurants', 'public');
-            $data['image'] = $imagePath;
+        $data = $request->except('image');
+        $new_img = $this->uploadImage($request);
+
+        if ($new_img) {
+            $data['image'] = $new_img;
         }
 
+        $restaurant->update($data);
 
-        $restaurant->update($request->all());
+        if ($old_image && $new_img) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+        // $restaurant->update($request->all());
         return redirect()->route('restaurants.index')
             ->with('success', 'Restaurant updated successfully.');
     }
@@ -107,11 +109,30 @@ class RestaurantController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Restaurant $restaurant)
+    public function destroy(string $id)
     {
+        $restaurant = Restaurant::findOrFail($id);
         $restaurant->delete();
+
+        if ($restaurant->image) {
+            Storage::disk('public')->delete($restaurant->image);
+        }
 
         return redirect()->route('restaurants.index')
             ->with('success', 'Restaurant deleted successfully.');
+    }
+
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+
+        $file = $request->file('image'); //uploadFile object
+        $path = $file->store('uploads', [
+            'disk' => 'public'
+        ]);
+        // dd($path);
+        return $path;
     }
 }

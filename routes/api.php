@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\API\BranchesController;
 use App\Http\Controllers\API\CategoriesController;
+use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\API\DishesController;
 use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\API\RestaurantController;
@@ -41,6 +43,20 @@ Route::post('/categories', [CategoriesController::class, 'store']);
 Route::get('/categories/{id}', [CategoriesController::class, 'show']);
 Route::put('/categories/{id}', [CategoriesController::class, 'update']);
 Route::delete('/categories/{id}', [CategoriesController::class, 'destroy']);
+
+// BranchesController
+Route::get('/branches', [BranchesController::class, 'index']);
+Route::post('/branches', [BranchesController::class, 'store']);
+Route::get('/branches/{id}', [BranchesController::class, 'show']);
+Route::put('/branches/{id}', [BranchesController::class, 'update']);
+Route::delete('/branches/{id}', [BranchesController::class, 'destroy']);
+
+// CountryController
+Route::get('/country', [CountryController::class, 'index']);
+Route::post('/country', [CountryController::class, 'store']);
+Route::get('/country/{id}', [CountryController::class, 'show']);
+Route::put('/country/{id}', [CountryController::class, 'update']);
+Route::delete('/country/{id}', [CountryController::class, 'destroy']);
 
 // LoginController
 Route::post('login', [LoginController::class, 'login']);

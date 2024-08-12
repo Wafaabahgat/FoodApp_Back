@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\Helper;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
 
@@ -13,8 +14,13 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::all();
-        return response()->json($restaurants);
+        $restaurants = Restaurant::with(
+            'dishes',
+            // :id,restaurant_id, category_id,name, price',
+            'orders',
+            'branches'
+        )->paginate();
+        return Helper::sendSuccess('', $restaurants);
     }
 
     /**
@@ -30,8 +36,8 @@ class RestaurantController extends Controller
         ]);
 
         Restaurant::create($request->all());
-        return response()
-            ->json(['message' => 'Restaurant created successfully'], 201);
+
+        return Helper::sendSuccess('Restaurant created successfully', '', 201);
     }
 
     /**
@@ -41,11 +47,9 @@ class RestaurantController extends Controller
     {
         $restaurant = Restaurant::find($id);
         if (!$restaurant) {
-            return response()
-                ->json(['message' => 'Restaurant not found'], 404);
+            return Helper::sendError('Restaurant not found', [], 404);
         }
-        return response()
-            ->json($restaurant);
+        return Helper::sendSuccess('', $restaurant);
     }
 
     /**
@@ -54,8 +58,9 @@ class RestaurantController extends Controller
     public function update(Request $request, string $id)
     {
         $restaurant = Restaurant::find($id);
+
         if (!$restaurant) {
-            return response()->json(['message' => 'Restaurant not found'], 404);
+            return Helper::sendError('Restaurant not found', [], 404);
         }
 
         $validated = $request->validate([
@@ -66,8 +71,7 @@ class RestaurantController extends Controller
 
         $restaurant->update($validated);
 
-        return response()
-            ->json(['message' => 'Restaurant updated successfully'], 201);
+        return Helper::sendSuccess('Restaurant updated successfully', '', 201);
     }
 
     /**
@@ -76,11 +80,12 @@ class RestaurantController extends Controller
     public function destroy(string $id)
     {
         $restaurant = Restaurant::find($id);
+
         if (!$restaurant) {
-            return response()->json(['message' => 'Restaurant not found'], 404);
+            return Helper::sendError('Restaurant not found', [], 404);
         }
 
         $restaurant->delete();
-        return response()->json(['message' => 'Restaurant deleted successfully']);
+        return Helper::sendSuccess('Restaurant deleted successfully', '', 201);
     }
 }

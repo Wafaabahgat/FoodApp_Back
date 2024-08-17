@@ -14,6 +14,9 @@ class Restaurant extends Model
         'phone',
         'email',
         'image',
+    ];
+
+    protected $hidden = [
         'created_at',
         'updated_at',
     ];

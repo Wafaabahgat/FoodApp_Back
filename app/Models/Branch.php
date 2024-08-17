@@ -18,6 +18,11 @@ class Branch extends Model
         'address',
         'phone'
     ];
+    
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 
     public function restaurant()
     {

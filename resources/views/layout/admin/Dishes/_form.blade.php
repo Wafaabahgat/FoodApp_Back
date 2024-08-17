@@ -20,6 +20,15 @@
 
 </div>
 
+<div class="form-group">
+    <x-form.input name="image" type="file" class="form-control-lg" label="Image" />
+    @if ($dish->image)
+        <div class="mt-2">
+            <img src="{{ asset('storage/' . $dish->image) }}" alt="Dish Image" width="200">
+        </div>
+    @endif
+</div>
+
 
 <div class="form-group">
     <button type="submit" class="btn btn-primary ">{{ $button_label ?? 'Save' }}</button>

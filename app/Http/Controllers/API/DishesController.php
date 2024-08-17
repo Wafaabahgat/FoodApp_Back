@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\Helper;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class DishesController extends Controller
     public function index()
     {
         $dish = Dish::all();
-        return response()->json($dish);
+        return Helper::sendSuccess('', $dish);
     }
 
     /**
@@ -32,8 +33,7 @@ class DishesController extends Controller
         ]);
 
         Dish::create($request->all());
-        return response()
-            ->json(['message' => 'Dish created successfully'], 201);
+        return Helper::sendSuccess('Dish created successfully', '', 201);
     }
 
     /**
@@ -44,12 +44,10 @@ class DishesController extends Controller
         $dish = Dish::find($id);
 
         if (!$dish) {
-            return response()
-                ->json(['message' => 'Dish not found'], 404);
+            return Helper::sendError('Dish not found', [], 404);
         }
 
-        return response()
-            ->json($dish);
+        return Helper::sendSuccess('', $dish);
     }
 
     /**
@@ -60,7 +58,7 @@ class DishesController extends Controller
 
         $dish = Dish::find($id);
         if (!$dish) {
-            return response()->json(['message' => 'Dish not found'], 404);
+            return Helper::sendError('Dish not found', [], 404);
         }
 
         $validated = $request->validate([
@@ -72,8 +70,7 @@ class DishesController extends Controller
         ]);
 
         $dish->update($validated);
-        return response()
-            ->json(['message' => 'Dish created successfully'], 201);
+        return Helper::sendSuccess('Dish updated successfully', '', 201);
     }
 
     /**
@@ -83,10 +80,12 @@ class DishesController extends Controller
     {
         $dish = Dish::find($id);
         if (!$dish) {
-            return response()->json(['message' => 'Dish not found'], 404);
+            return Helper::sendError('Dish not found', [], 404);
         }
 
         $dish->delete();
-        return response()->json(['message' => 'Dish deleted successfully']);
+        return Helper::sendSuccess('Dish deleted successfully', '', 201);
     }
+
+    
 }

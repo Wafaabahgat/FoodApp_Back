@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Dish;
 use App\Models\Restaurant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DishesController extends Controller
 {
@@ -50,7 +51,12 @@ class DishesController extends Controller
             'restaurant_id' => 'required|exists:restaurants,id',
         ]);
 
-        Dish::create($request->all());
+        $data = $request->except('image');
+        $data['image'] = $this->uploadImage($request);
+
+        Dish::create($data);
+
+        // Dish::create($request->all());
 
         return redirect()->route('dishes.index')
             ->with('success', 'Dish created successfully.');
@@ -88,7 +94,22 @@ class DishesController extends Controller
             // 'category_id' => 'required|exists:id',
         ]);
 
-        $dish->update($request->all());
+        $old_image = $dish->image;
+
+        $data = $request->except('image');
+        $new_img = $this->uploadImage($request);
+
+        if ($new_img) {
+            $data['image'] = $new_img;
+        }
+
+        $dish->update($data);
+
+        if ($old_image && $new_img) {
+            Storage::disk('public')->delete($old_image);
+        }
+
+        // $dish->update($request->all());
 
         return redirect()->route('dishes.index')
             ->with('success', 'Dish created successfully.');
@@ -97,11 +118,30 @@ class DishesController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Dish $dish)
+    public function destroy(string $id)
     {
+        $dish = Restaurant::findOrFail($id);
         $dish->delete();
+
+        if ($dish->image) {
+            Storage::disk('public')->delete($dish->image);
+        }
 
         return redirect()->route('dishes.index')
             ->with('success', 'Dish deleted successfully.');
+    }
+
+    protected function uploadImage(Request $request)
+    {
+        if (!$request->hasFile('image')) {
+            return;
+        }
+
+        $file = $request->file('image'); //uploadFile object
+        $path = $file->store('uploads', [
+            'disk' => 'public'
+        ]);
+        // dd($path);
+        return $path;
     }
 }

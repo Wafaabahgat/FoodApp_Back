@@ -33,6 +33,7 @@
                     <thead>
                         <tr>
                             <th scope="col">ID</th>
+                            <th scope="col">Image</th>
                             <th scope="col">Name</th>
                             <th scope="col">Description</th>
                             <th scope="col">Price</th>
@@ -46,6 +47,10 @@
                         @forelse ($data as $dt)
                             <tr>
                                 <th scope="row"> {{ $dt->id }} </th>
+                                <td>
+                                    <img src="{{ asset('storage/' . $dt->image) }}" alt="Dish Image" height="60"
+                                        width="80" />
+                                </td>
                                 <td> {{ $dt->name }} </td>
                                 <td> {{ $dt->description }} </td>
                                 <td> {{ $dt->price }} </td>

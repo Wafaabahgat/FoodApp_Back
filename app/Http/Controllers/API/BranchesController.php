@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Http\Helpers\Helper;
 use App\Models\Branch;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,7 @@ class BranchesController extends Controller
     public function index()
     {
         $branch = Branch::all();
-        return response()->json($branch);
+        return Helper::sendSuccess('', $branch);
     }
 
     /**
@@ -32,8 +33,7 @@ class BranchesController extends Controller
         ]);
 
         Branch::create($request->all());
-        return response()
-            ->json(['message' => 'Branch created successfully'], 201);
+        return Helper::sendSuccess('Branch created successfully', '', 201);
     }
 
     /**
@@ -44,12 +44,10 @@ class BranchesController extends Controller
         $branch = Branch::find($id);
 
         if (!$branch) {
-            return response()
-                ->json(['message' => 'Branch not found'], 404);
+            return Helper::sendError('Branch not found', [], 404);
         }
 
-        return response()
-            ->json($branch);
+        return Helper::sendSuccess('', $branch);
     }
 
     /**
@@ -59,7 +57,7 @@ class BranchesController extends Controller
     {
         $branch = Branch::find($id);
         if (!$branch) {
-            return response()->json(['message' => 'Branch not found'], 404);
+            return Helper::sendError('Branch not found', [], 404);
         }
 
         $validated = $request->validate([
@@ -72,8 +70,7 @@ class BranchesController extends Controller
         ]);
 
         $branch->update($validated);
-        return response()
-            ->json(['message' => 'Branch created successfully'], 201);
+        return Helper::sendSuccess('Branch updated successfully', '', 201);
     }
 
     /**
@@ -83,10 +80,10 @@ class BranchesController extends Controller
     {
         $branch = Branch::find($id);
         if (!$branch) {
-            return response()->json(['message' => 'Branch not found'], 404);
+            return Helper::sendError('Branch not found', [], 404);
         }
 
         $branch->delete();
-        return response()->json(['message' => 'Branch deleted successfully']);
+        return Helper::sendSuccess('Branch deleted successfully', '', 201);
     }
 }

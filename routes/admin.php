@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Finance_calendersController;
 use App\Http\Controllers\Admin\LoginController;
 use App\Http\Controllers\BranchesController;
+use App\Http\Controllers\CaruselsController;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\DishesController;
@@ -41,6 +42,7 @@ Route::group(
         Route::resource('/branches', BranchesController::class);
         Route::resource('/country', CountryController::class);
         Route::resource('/categories', CategoriesController::class);
+        Route::resource('/carusels', CaruselsController::class);
         Route::resource('/dishes', DishesController::class);
         Route::resource('/orders', OrderController::class);
         // Route::get('/orders', [OrderItemController::class, 'create']);

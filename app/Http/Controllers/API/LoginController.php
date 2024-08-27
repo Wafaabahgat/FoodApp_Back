@@ -26,17 +26,17 @@ class LoginController extends Controller
         if (auth('admin')->attempt($credentials)) {
             $user = Auth::guard('admin')->user();
             $token = $user->createToken('token')->plainTextToken;
-
-            return response()->json([
-                'token' => $token,
-                'user' => $user
-            ], 200);
-        } else {
-            return Helper::sendError('The provided credentials do not match our records.', [], 404);
+             return Helper::sendSuccess('Login Successfully', [
+                 'token' => $token,
+                 'user' => $user
+             ], 200);
 
             // return response()->json([
-            //     'message' => 'The provided credentials do not match our records.'
-            // ], 401);
+            //     'token' => $token,
+            //     'user' => $user
+            // ], 200);
+        } else {
+            return Helper::sendError('The provided credentials do not match our records.', [], 404);
         }
     }
 
@@ -47,7 +47,6 @@ class LoginController extends Controller
     {
         $user = Auth::guard('admin')->user();
         $user->tokens()->delete();
-        // return Helper::sendSuccess('Branch deleted successfully', '', 201);
         return response()->json(['message' => 'Logged out successfully.'], 200);
     }
 }

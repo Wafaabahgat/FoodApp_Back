@@ -61,7 +61,6 @@ class CountryController extends Controller
         $country->update($validated);
         return Helper::sendSuccess('Country updated successfully', '', 201);
 
-        // return response() ->json(['message' => 'Country updated successfully'], 201);
     }
 
     /**

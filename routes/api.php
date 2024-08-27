@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\BranchesController;
+use App\Http\Controllers\API\CaruselsController;
 use App\Http\Controllers\API\CategoriesController;
 use App\Http\Controllers\API\CountryController;
 use App\Http\Controllers\API\DishesController;
@@ -43,6 +44,13 @@ Route::post('/categories', [CategoriesController::class, 'store']);
 Route::get('/categories/{id}', [CategoriesController::class, 'show']);
 Route::put('/categories/{id}', [CategoriesController::class, 'update']);
 Route::delete('/categories/{id}', [CategoriesController::class, 'destroy']);
+
+// CaruselsController
+Route::get('/carusels', [CaruselsController::class, 'index']);
+Route::post('/carusels', [CaruselsController::class, 'store']);
+Route::get('/carusels/{id}', [CaruselsController::class, 'show']);
+Route::put('/carusels/{id}', [CaruselsController::class, 'update']);
+Route::delete('/carusels/{id}', [CaruselsController::class, 'destroy']);
 
 // BranchesController
 Route::get('/branches', [BranchesController::class, 'index']);

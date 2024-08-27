@@ -39,8 +39,8 @@ class CaruselsController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'image|max:1048576',
+            'name' => 'string|max:255',
+            'image' => 'image|max:1048576|required',
         ]);
 
         $data = $request->except('image');
@@ -76,8 +76,8 @@ class CaruselsController extends Controller
     public function update(Request $request, Carusels $carusels)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'image' => 'image|max:1048576',
+            'name' => 'string|max:255',
+            'image' => 'required|image|max:1048576',
         ]);
 
         $old_image = $carusels->image;

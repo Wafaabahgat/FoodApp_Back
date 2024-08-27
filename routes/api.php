@@ -68,4 +68,5 @@ Route::delete('/country/{id}', [CountryController::class, 'destroy']);
 
 // LoginController
 Route::post('login', [LoginController::class, 'login']);
+Route::post('register', [LoginController::class, 'register']);
 Route::middleware('auth:sanctum')->post('logout', [LoginController::class, 'logout']);

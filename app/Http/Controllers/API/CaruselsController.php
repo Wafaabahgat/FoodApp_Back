@@ -6,12 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\Carusels;
 use Illuminate\Http\Request;
 use App\Http\Helpers\Helper;
-use Illuminate\Support\Facades\Storage;
 use App\Traits\UploadImageTrait;
+use Illuminate\Support\Facades\Storage;
 
 class CaruselsController extends Controller
 {
     use UploadImageTrait;
+
     /**
      * Display a listing of the resource.
      */
@@ -31,20 +32,12 @@ class CaruselsController extends Controller
             'image' => 'image|max:1048576|required',
         ]);
 
-        $path = $this->uploadImg($request, 'carusels');
+        $path = $this->uploadImage($request, 'carusels');
 
-        carusels::create([
+        Carusels::create([
+            'name' => $request->input('name'), // تأكد من إدراج الاسم
             'image' => $path
         ]);
-
-        // // تخزين الصورة
-        // $path = $request->file('image')->store('uploads', 'public');
-
-        // // إنشاء كائن Carusels مع مسار الصورة
-        // $carusels = Carusels::create([
-        //     'name' => $request->name,
-        //     'image' => $path,
-        // ]);
 
         return Helper::sendSuccess('Carusels created successfully', [], 201);
     }
@@ -73,21 +66,16 @@ class CaruselsController extends Controller
 
         $validated = $request->validate([
             'name' => 'string|max:255',
-            'image' => 'image|max:1048576|nullable', // اجعلها غير إلزامية لتحديث بدون صورة
+            'image' => 'image|max:1048576|nullable',
         ]);
 
-        $old_path = $carusels->image;
-        $path = $this->uploadImg($request, 'carusels');
-
-        $carusels->update([
-            'image' => $path ?? $old_path
-        ]);
-
-        if ($old_path && isset($path)) {
-            Storage::disk('public')->delete($old_path);
+        // تحقق من الصورة إذا كانت موجودة
+        if ($request->hasFile('image')) {
+            $path = $this->uploadImage($request, 'carusels');
+            $validated['image'] = $path;
         }
 
-        // $carusels->update($validated);
+        $carusels->update($validated);
 
         return Helper::sendSuccess('Carusels updated successfully', $carusels, 201);
     }
@@ -102,11 +90,12 @@ class CaruselsController extends Controller
             return Helper::sendError('Carusels not found', [], 404);
         }
 
-        $carusels->delete();
-
+        // حذف الصورة من التخزين إذا لزم الأمر
         if ($carusels->image) {
             Storage::disk('public')->delete($carusels->image);
         }
+
+        $carusels->delete();
 
         return Helper::sendSuccess('Carusels deleted successfully', '', 201);
     }

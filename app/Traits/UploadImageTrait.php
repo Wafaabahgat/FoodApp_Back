@@ -2,23 +2,18 @@
 
 namespace App\Traits;
 
+use Illuminate\Http\Request;
+
 trait UploadImageTrait
 {
-    public function uploadImg($request, $folder, $fileName = 'image')
+    public function uploadImage(Request $request, $folder)
     {
-        $path = null;
-        if (!$request->hasFile($fileName)) {
-            return null;
+        if (!$request->hasFile('image')) {
+            return null; // أو يمكنك إرجاع رسالة خطأ أو قيمة افتراضية حسب الحاجة
         }
-        $file = $request->file($fileName);
-        $filename = date('YmdHi') . $file->getClientOriginalName();
-        $path = $file->store($folder, [
-            'disk' => 'public'
-        ]);
+
+        $file = $request->file('image'); //uploadFile object
+        $path = $file->store($folder, 'public'); // تخزين الصورة في المجلد المحدد
         return $path;
     }
 }
-
-// $path = $file->store('uploads', [
-//     'disk' => 'public'
-// ]);

@@ -45,13 +45,29 @@ class DishesController extends Controller
      */
     public function show(string $id)
     {
-        $dish = Dish::find($id);
+        $dish = Dish::with('restaurant')->findOrFail($id);
+        $dish->image = url('storage/' . $dish->image);
+
+        // $dish = Dish::findOrFailget($id)->map(function ($dishImg) {
+        //     $dishImg->image = url('storage/' . $dishImg->image);
+        //     return $dishImg;
+        // });
 
         if (!$dish) {
             return Helper::sendError('Dish not found', [], 404);
         }
+        
+        $response = [
+            'id' => $dish->id,
+            'name' => $dish->name,
+            'description' => $dish->description,
+            'image' => $dish->image,
+            'price' => $dish->price,
+            'slug' => $dish->slug,
+            'restaurant_name' => $dish->restaurant->name, 
+        ];
 
-        return Helper::sendSuccess('', $dish);
+        return Helper::sendSuccess('', $response);
     }
 
     /**

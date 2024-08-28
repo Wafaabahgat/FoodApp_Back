@@ -45,7 +45,9 @@ class RestaurantController extends Controller
      */
     public function show(string $id)
     {
-        $restaurant = Restaurant::find($id);
+        $restaurant = Restaurant::findOrFail($id);
+        $restaurant->image = url('storage/' . $restaurant->image);
+
         if (!$restaurant) {
             return Helper::sendError('Restaurant not found', [], 404);
         }
@@ -57,7 +59,7 @@ class RestaurantController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $restaurant = Restaurant::find($id);
+        $restaurant = Restaurant::findOrFail($id);
 
         if (!$restaurant) {
             return Helper::sendError('Restaurant not found', [], 404);
@@ -79,7 +81,7 @@ class RestaurantController extends Controller
      */
     public function destroy(string $id)
     {
-        $restaurant = Restaurant::find($id);
+        $restaurant = Restaurant::findOrFail($id);
 
         if (!$restaurant) {
             return Helper::sendError('Restaurant not found', [], 404);

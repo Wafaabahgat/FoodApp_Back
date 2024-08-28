@@ -18,7 +18,11 @@ class CaruselsController extends Controller
      */
     public function index()
     {
-        $carusels = Carusels::all();
+        // $carusels = Carusels::all();
+        $carusels = Carusels::all()->map(function ($carusel) {
+            $carusel->image = url('storage/' . $carusel->image);
+            return $carusel;
+        });
         return Helper::sendSuccess('', $carusels);
     }
 

@@ -14,7 +14,11 @@ class DishesController extends Controller
      */
     public function index()
     {
-        $dish = Dish::all();
+        // $dish = Dish::all();
+        $dish = Dish::all()->map(function ($dishImg) {
+            $dishImg->image = url('storage/' . $dishImg->image);
+            return $dishImg;
+        });
         return Helper::sendSuccess('', $dish);
     }
 
@@ -86,6 +90,4 @@ class DishesController extends Controller
         $dish->delete();
         return Helper::sendSuccess('Dish deleted successfully', '', 201);
     }
-
-    
 }

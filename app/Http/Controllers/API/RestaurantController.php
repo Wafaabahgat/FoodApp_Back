@@ -14,12 +14,22 @@ class RestaurantController extends Controller
      */
     public function index()
     {
-        $restaurants = Restaurant::with(
-            'dishes',
-            // :id,restaurant_id, category_id,name, price',
-            'orders',
-            'branches'
-        )->paginate();
+        // $restaurants = Restaurant::with(
+        //     'dishes',
+        //     'orders',
+        //     'branches'
+        // )->get()->map(function ($restaurant) {
+        //     $restaurant->image = url('storage/' . $restaurant->image);
+        //     return $restaurant;
+        // })->paginate();
+        
+         $restaurants = Restaurant::with(
+             'dishes',
+             // :id,restaurant_id, category_id,name, price',
+             'orders',
+             'branches'
+         )->paginate();
+
         return Helper::sendSuccess('', $restaurants);
     }
 
@@ -30,9 +40,11 @@ class RestaurantController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
+            'slug' => 'required',
         ]);
 
         Restaurant::create($request->all());
@@ -67,8 +79,10 @@ class RestaurantController extends Controller
 
         $validated = $request->validate([
             'name' => 'sometimes|required|string|max:255',
+            'description' => 'sometimes|required|string|max:500',
             'address' => 'sometimes|required|string',
             'phone' => 'sometimes|required|string',
+            'slug' => 'sometimes|required',
         ]);
 
         $restaurant->update($validated);

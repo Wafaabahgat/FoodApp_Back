@@ -14,7 +14,6 @@ class DishesController extends Controller
      */
     public function index()
     {
-        // $dish = Dish::all();
         $dish = Dish::all()->map(function ($dishImg) {
             $dishImg->image = url('storage/' . $dishImg->image);
             return $dishImg;
@@ -34,6 +33,7 @@ class DishesController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'slug' => 'required',
         ]);
 
         Dish::create($request->all());
@@ -76,7 +76,7 @@ class DishesController extends Controller
     public function update(Request $request, string $id)
     {
 
-        $dish = Dish::find($id);
+        $dish = Dish::findOrFail($id);
         if (!$dish) {
             return Helper::sendError('Dish not found', [], 404);
         }
@@ -87,6 +87,7 @@ class DishesController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric',
+            'slug' => 'required',
         ]);
 
         $dish->update($validated);
@@ -98,7 +99,7 @@ class DishesController extends Controller
      */
     public function destroy(string $id)
     {
-        $dish = Dish::find($id);
+        $dish = Dish::findOrFail($id);
         if (!$dish) {
             return Helper::sendError('Dish not found', [], 404);
         }

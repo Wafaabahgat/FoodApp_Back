@@ -40,10 +40,12 @@ class RestaurantController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'slug' => 'required|string|max:255',
         ]);
 
         $data = $request->except('image');
@@ -80,6 +82,8 @@ class RestaurantController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255',
+            'description' => 'required|string|max:500',
             'address' => 'required|string|max:255',
             'phone' => 'required|string|max:20',
             'email' => 'required|email|max:255',

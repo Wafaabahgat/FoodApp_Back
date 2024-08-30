@@ -11,8 +11,11 @@
 </div>
 
 <div class="form-group">
-    <x-form.input name="description" :value="$dish->description" type="text" class="form-control-lg" label="Description" />
+    <x-form.input name="slug" :value="$dish->slug" type="text" class="form-control-lg" label="Slug" />
+</div>
 
+<div class="form-group">
+    <x-form.input name="description" :value="$dish->description" type="text" class="form-control-lg" label="Description" />
 </div>
 
 <div class="form-group">
